@@ -1,6 +1,6 @@
 # Core API's
 
-Exam's Objectives:
+Exam's Objectives Covered in this section:
 
 <ol>
     <li>
@@ -12,3 +12,8 @@ Exam's Objectives:
         </ol>
     </li>
 </ol>
+
+**Topics:**
+
+[String](strings)
+ - [Creating and Manipulating Strings](strings/StringsMain.java) 
