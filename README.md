@@ -95,6 +95,10 @@ The purpose of this repository is to serve as a workspace in which every topic o
     </li>
 </ol>
 
+## Repository References
+
+1. Handling date, time, text, numeric and boolean values -> [Core Api's](src/coreapis)
+
 ## Resources
 
 - [Ocp Oracle Certified Professional Java Se 17 Developer Study Guide: Exam 1z0-829](https://www.amazon.com.br/Oracle-Certified-Professional-Developer-Study/dp/1119864585)
