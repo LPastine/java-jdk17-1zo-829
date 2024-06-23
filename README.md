@@ -97,7 +97,7 @@ The purpose of this repository is to serve as a workspace in which every topic o
 
 ## Repository References
 
-1. Handling date, time, text, numeric and boolean values -> [Core Api's](src/coreapis)
+1. Handling date, time, text, numeric and boolean values -> [Core Api's](src/coreapis/CoreAPIs.md)
 
 ## Resources
 
