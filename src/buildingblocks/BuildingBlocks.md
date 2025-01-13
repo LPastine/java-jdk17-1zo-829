@@ -250,3 +250,329 @@ int num, String value; // DOES NOT COMPILE
 This code doesn't compile because it tries to declare multiple variables of different types in the same statement.
 
 ## Initializing Variables
+
+Before you can use a variable, it needs a value. Some types of variables get this
+value set automatically, and others require the programmer to specify it.
+
+### Creating Local Variables
+
+A local variable is a variable defined within a constructor, method or initializer
+block.
+
+### Final local variables
+
+The final keyword can be applied to local variables and is equivalent to 
+declaring constants in other languages. For example:
+
+```java
+final int y = 10;
+int x = 20;
+y = x + 10; // DOES NOT COMPILE
+```
+
+Both variables are set, but y uses the final keyword. That's why it triggers
+a compiler error since the value cannot be modified.
+
+The final modifier can also be applied to local variable references. For example:
+
+```java
+final int[] favoriteNumbers = new int[10];
+favoriteNumbers[0] = 10;
+favoriteNumbers[1] = 20;
+favoriteNumbers = null; // DOES NOT COMPILE
+```
+
+Notice that we can modify the content, or data, in the array. The compiler error
+isn't until we try to change the value of the reference favoriteNumbers.
+
+### Uninitialized Local Variables
+
+Local variables do not have a default value and must be initialized before use.
+Furthermore, the compiler will report an error if you try to read an initialized
+value. For example:
+
+```java
+public int notValid() {
+    int y = 10;
+    int x;
+    int reply = x + y; // DOES NOT COMPILE
+    return reply;
+}
+```
+
+The y variable is initialized to 10. By contrast, x is not initialized before
+it is used, and the compiler generates an error. The compiler is smart enough 
+to recognize variables that have been initialized after their declaration
+but before they are used.
+
+```java
+public int valid() {
+    int y = 10;
+    int x; // x is declared here
+    x = 3; // x is initialized here
+    int z; // z is declared here but never initialized or used
+    int reply = x + y;
+    return reply;
+}
+```
+
+In this example, x is declared, initialized, and used in separate lines. Also,
+z is declared but never used, so it is not required to be initialized.
+
+The compiler is also smart enough to recognize initializations that are more complex.
+In this example, there are two branches of code:
+
+```java
+public void findAnswer(boolean check) {
+    int answer;
+    int anotherAnswer;
+    int onlyOneBranch;
+    if (check) {
+        onlyOneBranch = 1;
+        answer = 1;
+    } else {
+        answer = 2;
+    }
+    System.out.println(answer);
+    System.out.println(onlyOneBranch); // DOES NOT COMPILE
+}
+```
+
+The answer variable is initialized in both branches of the if statement,
+so the compiler is perfectly happy. It knows that regardless of whether check
+is true or false, the value answer will be set to something before it is used.
+The otherAnswer variable is not initialized but never used, and the compiler
+is equally happy. Remember, the compiler is only concerned if you try
+to use uninitialized local variables; it doesn't mind the ones you never use.
+
+The onlyOneBranch variable is initialized only if check happens to be true.
+The compiler knows there is a possibility for check to be false, resulting in
+uninitialized code, and gives a compiler error.
+
+### Passing Constructor and Method Parameters
+
+Variables passed to a constructor or method are called constructor parameters
+or method parameters, respectively. These parameters are like local variables
+that have been pre-initialized. The rules for initializing constructor and
+method parameters are the same, so we focus primarily on method parameters.
+
+Example:
+
+```java
+public void findAnswer(boolean check) {};
+```
+
+Take a look at the following method checkAnswer() in the same class:
+
+```java
+public void checkAnswer() {
+    boolean value;
+    findAnswer(value); // DOES NOT COMPILE
+}
+```
+
+The call to findAnswer() does not compile because it tries to use a variable
+that is not initialized. While the caller of a method checkAnswer() needs to
+be concerned about the variable being initialized, once inside the method
+findAnswer(), we can assume the local variable has been initialized to some value.
+
+### Defining Instance and Class variables
+
+Variables that are not local variables are defined either as instance variables
+or as class variables. An instance variable, often called a field, is a value
+defined within a specific instance of an object.
+
+On the other hand, a class variable is one that is defined on the class level
+and shared among all instances of the class. It can even be publicly accessible
+to classes outside the class and doesn't require an instance to use. You can tell
+a variable is a class variable because it has the keyword static before it.
+
+Instance and class variables do not require you to initialize them. As soon as
+you declare these variables, they are given a default value. The compiler doesn't
+know what value to use and so wants the simplest value it can give the type:
+null for an object, zero for the numeric types, and false for a boolean.
+
+### Inferring the Type with var
+
+You have the option of using the keyword var instead of the type when declaring 
+local variables under certain conditions. To use this feature, you just type var
+instead of the primitive or reference type. Example:
+
+```java
+public class Zoo {
+    public void whatTypeAmI() {
+        var name = "Hello";
+        var size = 7;
+    }
+}
+```
+
+The formal name of this feature is local variable type inference. First comes 
+local variable. This means that you can only use this feature for local variables.
+The exam may trick you with code like this:
+
+```java
+public class VarKeyWord {
+    var tricky = "Hello"; // DOES NOT COMPILE
+}
+```
+
+We just learned the difference between instance and local variables. The
+variable tricky is an instance variable. Local variable type inference works
+with local variables and not instance variables.
+
+### Type Inference of var
+
+When you type var, you are instructing the compiler to determine the type for you.
+The compiler looks at the code on the line of the declaration and uses it to
+infer the type. For example:
+
+```java
+public void reassignment() {
+    var number = 7;
+    number = 4;
+    number = "five"; // DOES NOT COMPILE
+}
+```
+
+First, the compiler determines that we want an int variable. On the next line,
+we have no trouble assigning a different int to it. On the following line, Java
+has a problem. We've asked it to assign a String to an int variable. This is not
+allowed.
+
+### Examples with var
+
+```java
+public void doesThisCompile(boolean check) {
+    var question;
+    question = 1;
+    var answer;
+    if (check) {
+        answer = 2;
+    } else {
+        answer = 3;
+    }
+    System.out.println(answer);
+}
+```
+
+The code does not compile. Remember that for local variable type inference, the
+compiler looks only at the line with the declaration. Since question and answer
+are not assigned values on the lines where they are defined, the compiler does
+not know what to make of them. For this reason, both lines do not compile.
+
+```java
+public void twoTypes() {
+    int a, var b = 3; // DOES NOT COMPILE
+    var n = null; // DOES NOT COMPILE
+}
+```
+
+The first line wouldn't work even if you replaced var with a real type. All
+the types declared on a single line must be the same type and share the same
+declaration. We couldn't write int a, int v = 3; either.
+
+The following line, is a single line. The compiler is being asked to infer the
+type of null. This could be any reference type. The only choice the compiler
+could make is Object. However, that is almost certainly not what the author
+of the code intended. The designers of Java decided it would be better not to
+allow var for null than to have to guess at intent.
+
+While a var cannot be initialized with a null value without a type, it can be
+reassigned a null value after it is declared, provided that the underlying
+data type is a reference type.
+
+```java
+public int addition(var a, var b) { // DOES NOT COMPILE
+    return a + b;
+}
+```
+
+In this example, a and b are method parameters. These are not local variables.
+Be on the lookout for var used with constructors, method parameters, or
+instance variables. Using var in one of these places is a good exam trick to
+see if you are paying attention. Remember that var is only used for local variable
+type inference!
+
+There's one last rule you should be aware of: var is not a reserved word and
+allowed to be used as an identifier. It is considered a reserved type name. A
+reserved type name means it cannot be used to define a type, such as a class,
+interface or enum.
+
+```java
+package var;
+
+public class Var {
+    public void var() {
+        var var = "var";
+    }
+    public void Var() {
+        Var var = new Var();
+    }
+}
+```
+
+Believe it or not, this code does compile. Java is case-sensitive, so Var doesn't
+introduce any conflicts as a class name. Naming a local variable var is legal.
+
+## Managing Variable Scope
+
+How many variables do you see that are scoped to this method?
+
+```java
+public void eat(int piecesOfCheese) {
+    int bitesOfCheese = 1;
+}
+```
+
+There are two variables with local scope. The bitesOfCheese variable is inside
+the method. The piecesOfCheese variable is a method parameter. Neither variable
+can be used outside where it is defined.
+
+### Limiting Scope
+
+Local variables can never have a scope larger than the method they are defined in.
+However, they can have a smaller scope. Consider this example:
+
+```java
+public void eatIfHungry(boolean hungry) {
+    if (hungry) {
+        int bitesOfCheese = 1;
+    } // bitesOfCheese goes out of scope here
+    System.out.println(bitesOfCheese); // DOES NOT COMPILE
+}
+```
+
+The variable hungry has a scope of the entire method, while the variable
+bitesOfCheese has a smaller scope. It is only available for use in the if
+statement because it is declared inside of it. When you see a set of braces ({})
+in the code, it means you have entered a new block of code. Each block of code
+has its own scope. When there are multiple blocks, you match them from the inside
+out.
+
+Since bitesOfCheese is declared in an if statement block, the scope is limited
+to that block.
+
+Remember that blocks can contain other blocks. These smaller contained blocks
+can reference variables defined in the larger scoped blocks, but not vice versa.
+Here's an example:
+
+```java
+public void eatIfHungry(boolean hungry) {
+    if (hungry) {
+        int bitesOfCheese = 1;
+        {
+            var teenyBit = true;
+            System.out.println(bitesOfCheese);
+        }
+    }
+    System.out.println(teenyBit); // DOES NOT COMPILE
+}
+```
+
+The bitesOfCheese variable is in scope until the if block statement ends. Using
+it in the smaller block that follows its declaration is fine. The teenyBit
+variable goes out of scope after its block is closed. Using it outside this scope
+is not allowed.
+
+### Applying Scope to Classes
