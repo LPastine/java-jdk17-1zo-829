@@ -24,11 +24,6 @@ Exam's Objectives Covered in this section:
     </li>
 </ol>
 
-**Topics:**
-
-[String](strings)
- - [Creating and Manipulating Strings](strings/StringsMain.java) 
-
 ## Understanding Data Types
 
 Java applications contain two types of data:
